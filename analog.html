@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       * {
+        box-sizing: border-box;
+       }
+       body {
+        margin: 0px;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(#28303c, #10151d);
+       } 
+
+       .clock {
+        position: relative;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        border: 7px solid #bd9552;
+        background: radial-gradient(
+            circle at 35% 28%,
+            #303842, #111820 67%
+        );
+        box-shadow: 
+        0 0 0 3px #423321,
+        inset 0 0 0 3px #10151b,
+        0 20px 35px #0007;
+       }
+       .mark {
+        position: absolute;
+        inset: 13px;
+        transform: rotate(var(--angle));
+       }
+       .mark::before {
+        content: "";
+        display:block;
+        width: 2px;
+        height: 9px;
+        margin: auto;
+        border-radius: 3px;
+        background: #bda477;
+       }
+       .mark.major::before {
+        width: 4px;
+        height: 15px;
+        background: #e9cb8c;
+       }
+       .brand {
+        position: absolute;
+        top: 28%;
+        width: 100%;
+        text-align: center;
+        color: #e8ce96;
+        font: bold 14px Georgia;
+        letter-spacing: 3px;
+       }
+       .brand small {
+        display: block;
+        margin-top: 7px;
+        color: #8e9aa5;
+        font:  8px Arial;
+        letter-spacing: 2px;
+
+       }
+       .clock::after {
+        content: "Learning Axis";
+        position: absolute;
+        bottom: 26%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font: 8px Arial, sans-serif;
+        letter-spacing: 2px;
+        color: #c6aa73;
+       }
+       .hand {
+        position: absolute;
+        left: 50%;
+        bottom: 50%;
+        transform-origin: bottom center;
+        border-radius: 6px;
+       }
+       .hour {
+        width: 7px;
+        height: 24%;
+        margin-left: -3.5px;
+        background: linear-gradient(
+            90deg, #a78043, #f3d79a, #a78043
+        );
+        z-index: 2;
+       }
+
+       .minute {
+        background: linear-gradient(90deg, #a78043, #f3d79a, #a78043);
+        width: 4px;
+        height: 35%;
+        margin-left: -2px;
+        z-index: 3;
+       }
+       .second {
+        width: 2px;
+        height: 39%;
+        margin-left: -1px;
+        background: #db685d;
+        z-index: 4;
+       }
+       .center {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 12px;
+        height: 12px;
+        transform: translate(-50%, -50%);
+        border: 3px solid #866539;
+        border-radius: 50%;
+        background: #e6c887;
+        z-index: 5;
+       }
+    </style>
+</head>
+<body>
+    
+    <div class="clock">
+        <div class="brand">
+            AUREL
+            <small>AUTOMATIC</small>
+        </div>
+
+        <div class="hour hand"></div>
+            <div class="hand minute"></div>
+            <div class="hand second"></div>
+            <div class="center"></div>
+    </div>
+</body>
+<script>
+    const clock = document.querySelector(".clock");
+    for (let i =0; i < 60; i++) {
+        const mark = document.createElement("span");
+        mark.className = i % 5 === 0 ? "mark major" :
+        'mark';
+        mark.style.setProperty("--angle", i * 6 + "deg");
+        clock.appendChild(mark);
+    }
+    const hour = document.querySelector(".hour");
+    const minute = document.querySelector(".minute");
+    const second = document.querySelector(".second");
+    function updateClock() {
+        const now = new Date();
+        const s = now.getSeconds() + now.getMilliseconds() /1000;
+        const m = now.getMinutes() + s /60;
+        const h=now.getHours() % 12 + m / 60;
+        hour.style.transform = `rotate(${h * 30}deg)`;
+        minute.style.transform= `rotate(${m * 6}deg)`;
+        second.style.transform = `rotate(${s * 6}deg)`;
+    }
+    updateClock();
+    setInterval(updateClock, 50);
+</script>
+</html>
